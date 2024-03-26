@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 // @access  public
 const getAllPost = asyncHandler(async (req, res) => {
   const post = await Post.find().sort({ createdAt: "desc" });
-  res.status(200).json({ post });
+  res.status(200).json(post);
 });
 
 // @desc    add new post
@@ -26,6 +26,7 @@ const addPost = asyncHandler(async (req, res) => {
   if (user) {
     const post = await Post.create({
       user: req.user._id,
+      username: req.user.username,
       title,
       body,
     });
@@ -46,7 +47,7 @@ const getUserPost = asyncHandler(async (req, res) => {
     const post = await Post.find({ user: req.user._id }).sort({
       createdAt: "desc",
     });
-    res.status(200).json({ post });
+    res.status(200).json(post);
   } else {
     res.status(401);
     throw new Error("Unauthorized: post not found");
